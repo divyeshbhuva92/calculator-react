@@ -27,24 +27,31 @@ body {
   min-height: 100vh;
   justify-content: center;
   align-content: center;
-  grid-template-columns: repeat(4, 70px);
-  grid-template-rows: minmax(100px, auto) repeat(5, 70px);
+  grid-template-columns: repeat(4, 65px);
+  grid-template-rows: minmax(110px, auto) repeat(6, 55px);
 }
 
 .calculator > button {
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   outline: none;
   border: 1px solid white;
+}
+.number {
   background-color: rgba(255, 255, 255, 0.7);
+}
+.operation {
+  background-color: rgba(238, 238, 238, 0.7);
 }
 .calculator > button:hover {
   background-color: rgba(255, 255, 255, 0.9);
 }
-/* .all-clear,
-.equal {
+.all-clear {
   grid-column: span 2;
-} */
+}
+.equal {
+  grid-row: span 2;
+}
 
 .display {
   grid-column: 1 / 5;

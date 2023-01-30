@@ -40,6 +40,10 @@ function Calculator() {
       percent();
     } else if (value === "^") {
       powerOf();
+    } else if (value === "1/x") {
+      oneBy();
+    } else if (value === "+/-") {
+      positiveNegative();
     } else if (value === "=") {
       equal();
     } else {
@@ -79,7 +83,7 @@ function Calculator() {
           setCurrentVal("");
         }
       }
-    } else return;
+    }
   }
   function substract() {
     if (currentVal !== "") {
@@ -133,6 +137,21 @@ function Calculator() {
           setCurrentVal("");
         }
       }
+    } else return;
+  }
+  function positiveNegative() {
+    if (currentVal !== "") {
+      setCurrentVal(-currentVal);
+    } else return;
+  }
+  function oneBy() {
+    if (currentVal !== "") {
+      if (previousVal === "") {
+        setCurrentVal((currentVal) => eval(1 / currentVal));
+      } else {
+        setCurrentVal((currentVal) => 1 / eval(previousVal + currentVal));
+      }
+      setPreviousVal("");
     } else return;
   }
   function percent() {
@@ -259,17 +278,31 @@ function Calculator() {
         <div className="current">{currentVal}</div>
       </div>
 
-      <button value="ac" className="all-clear" onClick={handleOperator}>
+      <button
+        value="ac"
+        className="operation all-clear"
+        onClick={handleOperator}
+      >
         AC
-      </button>
-      <button value="^" className="all-clear" onClick={handleOperator}>
-        ^
       </button>
       <button value="%" className="operation" onClick={handleOperator}>
         %
       </button>
       <button value="/" className="operation" onClick={handleOperator}>
         ÷
+      </button>
+
+      <button value="1/x" className="operation" onClick={handleOperator}>
+        1/x
+      </button>
+      <button value="+/-" className="operation" onClick={handleOperator}>
+        +/-
+      </button>
+      <button value="^" className="operation" onClick={handleOperator}>
+        ^
+      </button>
+      <button value="*" className="operation multi" onClick={handleOperator}>
+        x
       </button>
 
       <button value="7" className="number" onClick={handleOperand}>
@@ -281,8 +314,8 @@ function Calculator() {
       <button value="9" className="number" onClick={handleOperand}>
         9
       </button>
-      <button value="*" className="operation" onClick={handleOperator}>
-        x
+      <button value="-" className="operation minus" onClick={handleOperator}>
+        -
       </button>
 
       <button value="4" className="number" onClick={handleOperand}>
@@ -294,7 +327,7 @@ function Calculator() {
       <button value="6" className="number" onClick={handleOperand}>
         6
       </button>
-      <button value="+" className="operation" onClick={handleOperator}>
+      <button value="+" className="operation plus" onClick={handleOperator}>
         +
       </button>
 
@@ -307,8 +340,8 @@ function Calculator() {
       <button value="3" className="number" onClick={handleOperand}>
         3
       </button>
-      <button value="-" className="operation" onClick={handleOperator}>
-        -
+      <button value="=" className="operation equal" onClick={handleOperator}>
+        =
       </button>
 
       <button value="0" className="number" onClick={handleOperand}>
@@ -319,9 +352,6 @@ function Calculator() {
       </button>
       <button value="." className="number" onClick={handleOperand}>
         .
-      </button>
-      <button value="=" className="equal" onClick={handleOperator}>
-        =
       </button>
     </div>
   );
