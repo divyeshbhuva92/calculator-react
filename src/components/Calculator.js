@@ -179,7 +179,6 @@ function Calculator() {
 
   document.onkeyup = function (event) {
     let key = event.key;
-    // console.log(event.shiftKey, key);
 
     // keys for number
     if (key == 1) {
