@@ -38,6 +38,8 @@ function Calculator() {
       divide();
     } else if (value === "%") {
       percent();
+    } else if (value === "^") {
+      powerOf();
     } else if (value === "=") {
       equal();
     } else {
@@ -47,9 +49,15 @@ function Calculator() {
   };
 
   function equal() {
-    if (currentVal !== "") {
+    let part1 = previousVal.slice(0, -1);
+    let part2 = previousVal[previousVal.length - 1];
+    // console.log(part1, part2, currentVal);
+    if (currentVal !== "" && part2 !== "^") {
       setPreviousVal((previousVal) => previousVal + currentVal);
       setCurrentVal((currentVal) => eval(previousVal + currentVal));
+      setPreviousVal("");
+    } else if (part2 == "^") {
+      setCurrentVal((currentVal) => Math.pow(part1, currentVal));
       setPreviousVal("");
     } else {
       return;
@@ -61,8 +69,15 @@ function Calculator() {
         setPreviousVal((previousVal) => currentVal + "+");
         setCurrentVal("");
       } else {
-        setPreviousVal((previousVal) => eval(previousVal + currentVal) + "+");
-        setCurrentVal("");
+        let part1 = previousVal.slice(0, -1);
+        let part2 = previousVal[previousVal.length - 1];
+        if (part2 == "^") {
+          setPreviousVal((previousVal) => Math.pow(part1, currentVal) + "+");
+          setCurrentVal("");
+        } else {
+          setPreviousVal((previousVal) => eval(previousVal + currentVal) + "+");
+          setCurrentVal("");
+        }
       }
     } else return;
   }
@@ -72,8 +87,15 @@ function Calculator() {
         setPreviousVal((previousVal) => currentVal + "-");
         setCurrentVal("");
       } else {
-        setPreviousVal((previousVal) => eval(previousVal + currentVal) + "-");
-        setCurrentVal("");
+        let part1 = previousVal.slice(0, -1);
+        let part2 = previousVal[previousVal.length - 1];
+        if (part2 == "^") {
+          setPreviousVal((previousVal) => Math.pow(part1, currentVal) + "-");
+          setCurrentVal("");
+        } else {
+          setPreviousVal((previousVal) => eval(previousVal + currentVal) + "-");
+          setCurrentVal("");
+        }
       }
     } else return;
   }
@@ -83,8 +105,15 @@ function Calculator() {
         setPreviousVal((previousVal) => currentVal + "*");
         setCurrentVal("");
       } else {
-        setPreviousVal((previousVal) => eval(previousVal + currentVal) + "*");
-        setCurrentVal("");
+        let part1 = previousVal.slice(0, -1);
+        let part2 = previousVal[previousVal.length - 1];
+        if (part2 == "^") {
+          setPreviousVal((previousVal) => Math.pow(part1, currentVal) + "*");
+          setCurrentVal("");
+        } else {
+          setPreviousVal((previousVal) => eval(previousVal + currentVal) + "*");
+          setCurrentVal("");
+        }
       }
     } else return;
   }
@@ -94,8 +123,15 @@ function Calculator() {
         setPreviousVal((previousVal) => currentVal + "/");
         setCurrentVal("");
       } else {
-        setPreviousVal((previousVal) => eval(previousVal + currentVal) + "/");
-        setCurrentVal("");
+        let part1 = previousVal.slice(0, -1);
+        let part2 = previousVal[previousVal.length - 1];
+        if (part2 == "^") {
+          setPreviousVal((previousVal) => Math.pow(part1, currentVal) + "/");
+          setCurrentVal("");
+        } else {
+          setPreviousVal((previousVal) => eval(previousVal + currentVal) + "/");
+          setCurrentVal("");
+        }
       }
     } else return;
   }
@@ -123,9 +159,28 @@ function Calculator() {
       }
     }
   }
+  function powerOf() {
+    if (currentVal !== "" && previousVal === "") {
+      setPreviousVal((previousVal) => currentVal + "^");
+      setCurrentVal("");
+    } else if (currentVal !== "" && previousVal !== "") {
+      let part1 = previousVal.slice(0, -1);
+      let part2 = previousVal[previousVal.length - 1];
+      if (part2 !== "^") {
+        setPreviousVal((previousVal) => eval(previousVal + currentVal) + "^");
+        setCurrentVal("");
+      } else {
+        setPreviousVal((previousVal) => Math.pow(part1, currentVal) + "^");
+        setCurrentVal("");
+      }
+      // console.log(part1, ",", part2, ",", currentVal);
+    } else return;
+  }
 
   document.onkeyup = function (event) {
     let key = event.key;
+    // console.log(event.shiftKey, key);
+
     // keys for number
     if (key == 1) {
       setCurrentVal((currentVal) => currentVal + key);
@@ -154,8 +209,11 @@ function Calculator() {
     if (key == 9) {
       setCurrentVal((currentVal) => currentVal + key);
     }
-    if (key == 0) {
+    if (key == 0 && event.shiftKey == false) {
       setCurrentVal((currentVal) => currentVal + key);
+    }
+    if (key == ")" || key == "Insert") {
+      setCurrentVal((currentVal) => currentVal + "00");
     }
     if (key == "." && !currentVal.includes(".")) {
       setCurrentVal((currentVal) => currentVal + ".");
@@ -173,6 +231,9 @@ function Calculator() {
     }
     if (key == "/") {
       divide();
+    }
+    if (key == "^") {
+      powerOf();
     }
 
     // key for percentage
@@ -201,6 +262,9 @@ function Calculator() {
 
       <button value="ac" className="all-clear" onClick={handleOperator}>
         AC
+      </button>
+      <button value="^" className="all-clear" onClick={handleOperator}>
+        ^
       </button>
       <button value="%" className="operation" onClick={handleOperator}>
         %
@@ -250,6 +314,9 @@ function Calculator() {
 
       <button value="0" className="number" onClick={handleOperand}>
         0
+      </button>
+      <button value="00" className="number" onClick={handleOperand}>
+        00
       </button>
       <button value="." className="number" onClick={handleOperand}>
         .

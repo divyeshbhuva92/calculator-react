@@ -41,10 +41,10 @@ body {
 .calculator > button:hover {
   background-color: rgba(255, 255, 255, 0.9);
 }
-.all-clear,
+/* .all-clear,
 .equal {
   grid-column: span 2;
-}
+} */
 
 .display {
   grid-column: 1 / 5;
@@ -65,7 +65,4 @@ body {
 }
 .display .current {
   font-size: 30px;
-}
-
-@media only screen and (max-width: 768px) {
 }
