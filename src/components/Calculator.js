@@ -5,11 +5,9 @@ function Calculator() {
   const [previousVal, setPreviousVal] = useState("");
   const [currentVal, setCurrentVal] = useState("");
 
-  const handleOperand = (e) => {
+  const handleNumber = (e) => {
     const value = e.target.value;
-    // if (value === "." && !currentVal.includes(".")) {
-    //   setCurrentVal((currentVal) => (currentVal += "."));
-    // }
+
     if (value === ".") {
       if (!currentVal.includes(".")) {
         setCurrentVal((currentVal) => currentVal + ".");
@@ -18,7 +16,6 @@ function Calculator() {
       }
     } else {
       setCurrentVal((currentVal) => currentVal + value);
-      // console.log(value);
     }
   };
 
@@ -149,7 +146,13 @@ function Calculator() {
       if (previousVal === "") {
         setCurrentVal((currentVal) => eval(1 / currentVal));
       } else {
-        setCurrentVal((currentVal) => 1 / eval(previousVal + currentVal));
+        let part1 = previousVal.slice(0, -1);
+        let part2 = previousVal[previousVal.length - 1];
+        if (part2 == "^") {
+          setCurrentVal((currentVal) => 1 / Math.pow(part1, currentVal));
+        } else {
+          setCurrentVal((currentVal) => 1 / eval(previousVal + currentVal));
+        }
       }
       setPreviousVal("");
     } else return;
@@ -305,52 +308,52 @@ function Calculator() {
         x
       </button>
 
-      <button value="7" className="number" onClick={handleOperand}>
+      <button value="7" className="number" onClick={handleNumber}>
         7
       </button>
-      <button value="8" className="number" onClick={handleOperand}>
+      <button value="8" className="number" onClick={handleNumber}>
         8
       </button>
-      <button value="9" className="number" onClick={handleOperand}>
+      <button value="9" className="number" onClick={handleNumber}>
         9
       </button>
       <button value="-" className="operation minus" onClick={handleOperator}>
         -
       </button>
 
-      <button value="4" className="number" onClick={handleOperand}>
+      <button value="4" className="number" onClick={handleNumber}>
         4
       </button>
-      <button value="5" className="number" onClick={handleOperand}>
+      <button value="5" className="number" onClick={handleNumber}>
         5
       </button>
-      <button value="6" className="number" onClick={handleOperand}>
+      <button value="6" className="number" onClick={handleNumber}>
         6
       </button>
       <button value="+" className="operation plus" onClick={handleOperator}>
         +
       </button>
 
-      <button value="1" className="number" onClick={handleOperand}>
+      <button value="1" className="number" onClick={handleNumber}>
         1
       </button>
-      <button value="2" className="number" onClick={handleOperand}>
+      <button value="2" className="number" onClick={handleNumber}>
         2
       </button>
-      <button value="3" className="number" onClick={handleOperand}>
+      <button value="3" className="number" onClick={handleNumber}>
         3
       </button>
       <button value="=" className="operation equal" onClick={handleOperator}>
         =
       </button>
 
-      <button value="0" className="number" onClick={handleOperand}>
+      <button value="0" className="number" onClick={handleNumber}>
         0
       </button>
-      <button value="00" className="number" onClick={handleOperand}>
+      <button value="00" className="number" onClick={handleNumber}>
         00
       </button>
-      <button value="." className="number" onClick={handleOperand}>
+      <button value="." className="number" onClick={handleNumber}>
         .
       </button>
     </div>
