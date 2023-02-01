@@ -1,6 +1,9 @@
-import { React } from "react";
+import React from "react";
 
 const HistorylistBox = ({ historylist }) => {
+  // function clearHistory() {
+  //   console.log("list :", historylist);
+  // }
   return (
     <div className="historybox">
       <div className="History">History</div>

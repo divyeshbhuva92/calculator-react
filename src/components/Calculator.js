@@ -1,5 +1,6 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import useLocalStorage from "use-local-storage";
 import HistorylistBox from "./HistorylistBox";
 import historyIcon from "./historyIcon.svg";
 
@@ -54,28 +55,37 @@ function Calculator() {
     }
   };
 
+  const handleDelete = (e) => {
+    const value = e.target.value;
+    if (value === "del") {
+      deleteLast();
+    }
+  };
+
   function equal() {
-    let part1 = previousVal.slice(0, -1);
-    let part2 = previousVal[previousVal.length - 1];
-    // console.log(part1, part2, currentVal);
-    if (currentVal !== "" && part2 !== "^") {
-      setPreviousVal((previousVal) => previousVal + currentVal);
-      setCurrentVal((currentVal) => eval(previousVal + currentVal));
-      setPreviousVal("");
-      if (currentVal !== "" && previousVal !== "") {
-        updateHistorylist(
-          previousVal + currentVal,
-          eval(previousVal + currentVal)
-        );
-      }
-    } else if (part2 === "^") {
-      setCurrentVal((currentVal) => Math.pow(part1, currentVal));
-      setPreviousVal("");
-      if (currentVal !== "" && previousVal !== "") {
-        updateHistorylist(
-          previousVal + currentVal,
-          Math.pow(part1, currentVal)
-        );
+    if (currentVal !== "") {
+      let part1 = previousVal.slice(0, -1);
+      let part2 = previousVal[previousVal.length - 1];
+      // console.log(part1, part2, currentVal);
+      if (part2 !== "^") {
+        setPreviousVal((previousVal) => previousVal + currentVal);
+        setCurrentVal((currentVal) => eval(previousVal + currentVal));
+        setPreviousVal("");
+        if (currentVal !== "" && previousVal !== "") {
+          updateHistorylist(
+            previousVal + currentVal,
+            eval(previousVal + currentVal)
+          );
+        }
+      } else if (part2 === "^") {
+        setCurrentVal((currentVal) => Math.pow(part1, currentVal));
+        setPreviousVal("");
+        if (currentVal !== "" && previousVal !== "") {
+          updateHistorylist(
+            previousVal + currentVal,
+            Math.pow(part1, currentVal)
+          );
+        }
       }
     } else {
       return;
@@ -275,6 +285,14 @@ function Calculator() {
       // console.log(part1, ",", part2, ",", currentVal);
     } else return;
   }
+  function deleteLast() {
+    if (currentVal !== "") {
+      let currentWithoutLastDigit = currentVal.slice(0, -1);
+      setCurrentVal("");
+      setCurrentVal(currentWithoutLastDigit);
+    }
+    return;
+  }
 
   document.onkeyup = function (event) {
     let key = event.key;
@@ -352,14 +370,29 @@ function Calculator() {
     if (key === "Enter" && event.shiftKey !== true) {
       equal();
     }
+    // key for delete(backspace key)
+    if (key === "Backspace" && event.shiftKey !== true) {
+      deleteLast();
+    }
   };
 
-  const [historylist, setHistorylist] = useState([]);
+  const [historylist, setHistorylist] = useLocalStorage("history", []);
 
   function updateHistorylist(que, ans) {
     historylist.push({ que, ans });
     // console.log(historylist);
   }
+
+  useEffect(() => {
+    localStorage.setItem("history", JSON.stringify(historylist));
+  }, [updateHistorylist]);
+
+  useEffect(() => {
+    const history = JSON.parse(localStorage.getItem("history"));
+    if (history) {
+      setHistorylist(history);
+    }
+  }, []);
 
   const [showHistory, setShowHistory] = useState(false);
   const toggleHistory = () => setShowHistory(!showHistory);
@@ -383,6 +416,9 @@ function Calculator() {
           onClick={handleOperator}
         >
           AC
+        </button>
+        <button value="del" className="operation delete" onClick={handleDelete}>
+          <span>🔙</span>
         </button>
         <button value="%" className="operation" onClick={handleOperator}>
           %
