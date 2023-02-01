@@ -8,23 +8,95 @@
   box-sizing: border-box;
 }
 
+:root {
+  --light-gray1: rgba(255, 255, 255, 0.5);
+  --light-gray2: rgba(238, 238, 238, 0.5);
+  --black1: rgba(0, 0, 0, 0.8);
+}
 body {
-  /* padding: 10px 10px 10px 10px; */
-  margin: 0;
-  overflow: hidden;
   display: flex;
+  margin: 0;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
   background: linear-gradient(45deg, lightpink, skyblue);
 }
-.container {
+.main-container {
+  /* display: grid;
+  grid-template-columns: 1fr 1fr; */
   display: flex;
+  flex-direction: row;
+  gap: 0;
   justify-content: center;
-  align-content: center;
+  align-items: center;
+}
+
+.historylist {
+  gap: 10px;
+  padding-top: 10px;
+  height: calc(440px - 40px);
+  width: 260px;
+  overflow-y: scroll;
+  background-color: var(--light-gray2);
+}
+.historylist::-webkit-scrollbar {
+  width: 2px;
+}
+.historylist::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.historylist::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.historyEle {
+  height: auto;
+  width: calc(100% - 20px);
+  padding: 5px 10px;
+  margin: 0 10px 10px 10px;
+  border-radius: 5px;
+  text-align: right;
+  background-color: var(--light-gray1);
+}
+.History {
+  display: flex;
+  position: relative;
+  width: 260px;
+  height: 40px;
+  color: #26272b;
+  font-weight: 500;
+  background-color: var(--light-gray2);
+  border-bottom: 2px solid #26272b;
+  justify-content: center;
+  align-items: center;
+}
+.clearHistory:hover {
+  background-color: #1e1e22;
+}
+.que {
+  color: var(--black1);
+  font-weight: 400;
+}
+.ans {
+  color: var(--black1);
+  font-weight: 700;
+}
+
+.HistoryIcon {
+  position: absolute;
+  margin: 8px;
+  height: 24px;
+  width: 24px;
+  filter: invert(0.5);
+}
+.HistoryIcon:hover {
+  cursor: pointer;
+  filter: invert(0.7);
 }
 .calculator {
   display: grid;
-  min-height: 100vh;
+  min-height: 440px;
+  height: fit-content;
   justify-content: center;
   align-content: center;
   grid-template-columns: repeat(4, 65px);
@@ -59,7 +131,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 8px;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
@@ -68,8 +140,24 @@ body {
 }
 
 .display .previous {
-  font-size: 15px;
+  width: calc(240px - 16px);
+  text-align: right;
+  font-size: 25px;
 }
 .display .current {
-  font-size: 30px;
+  font-size: 40px;
+}
+
+@media screen and (max-width: 600px) {
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    justify-content: center;
+    padding: 5px;
+    /* align-items: center; */
+  }
+  .calculator {
+    height: 440px;
+  }
 }
