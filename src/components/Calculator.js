@@ -21,7 +21,7 @@ function Calculator() {
       setCurrentVal((currentVal) => currentVal + value);
     }
   };
-
+  // ==========================================
   const handleOperator = (e) => {
     const value = e.target.value;
 
